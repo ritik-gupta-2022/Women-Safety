@@ -8,19 +8,19 @@ export const getNews = async(req,res,next)=>{
     const options = {
         method: 'GET',
         headers: {
-            'x-rapidapi-key': '7f8dcc7f04msh923f6f64622561ap1dd1e1jsn39f058161bbe',
+            'x-rapidapi-key': process.env.RAPID_API_KEY,
             'x-rapidapi-host': 'google-news13.p.rapidapi.com'
         }
     };
 
-    try {
+    try{
         const response = await fetch(url, options);
-        const result = await response.text();
+        const result = await response.json();
         console.log(result);
-        res.status(200).json("News Recieved");
+        res.status(200).json(result);
     }
-    catch (error) {
-        next(error);
+    catch(err) {
+        next(err);
     }
 }
 
@@ -39,6 +39,26 @@ export const sendAlert = async (req,res,next) =>{
     }
     catch(err){
         console.error(err);
+        next(err);
+    }
+}
+
+export const getTutorials = async(req,res,next)=>{
+    const url = 'https://youtube-v31.p.rapidapi.com/search?q=Women%20safety%20tutorials%20and%20techniques&part=snippet%2Cid&regionCode=US&maxResults=50&order=date';
+    const options = {
+        method: 'GET',
+        headers: {
+            'x-rapidapi-key': process.env.RAPID_API_KEY,
+            'x-rapidapi-host': 'youtube-v31.p.rapidapi.com'
+        }
+    };
+
+    try {
+        const response = await fetch(url, options);
+        const result = await response.json();
+        res.status(200).json(result);
+    } 
+    catch(err) {
         next(err);
     }
 }
