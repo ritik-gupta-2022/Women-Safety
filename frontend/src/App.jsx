@@ -8,6 +8,8 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import DefenseTutorials from './pages/DefenseTutorials';
 import NewsArticles from './pages/NewsArticles';
+import EmergencyContactForm from './pages/EmergencyContactForm';
+import EmergencyContactDetails from './pages/EmergencyContactDetails';
 
 function App() {
 
@@ -22,7 +24,10 @@ function App() {
           <Route path='/show-complaints' element={<Complaints/>} />
           <Route path='/tutorials' element={<DefenseTutorials/>} />
           <Route path='/getnews' element={<NewsArticles/>} />
+          <Route path='/addcontact' element={<EmergencyContactForm/>} />
+          <Route path='/getcontact' element={<EmergencyContactDetails/>} />
 
+          
         </Routes>
       </BrowserRouter>
 

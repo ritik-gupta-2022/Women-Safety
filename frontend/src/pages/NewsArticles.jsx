@@ -1,19 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const NewsArticles = () => {
   const [articles, setArticles] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  // Fetch articles from backend API
   useEffect(() => {
     const fetchArticles = async () => {
       try {
         setLoading(true);
-        const res = await fetch('/api/feature/get-news'); // Replace with your actual backend API endpoint
+        const res = await fetch('/api/feature/get-news'); 
         const data = await res.json();
-        setArticles(data.items); // Adjust based on your response structure
+        setArticles(data.items); 
         setLoading(false);
       } catch (err) {
         toast.error(err.message || 'Failed to load articles');

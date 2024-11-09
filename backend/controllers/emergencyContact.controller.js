@@ -3,9 +3,9 @@ import { errorHandler } from "../utils/error.js";
 import { v4 as uuidv4 } from 'uuid';
 
 export const addEmergencyContact = async(req,res,next) =>{
-    const {phoneNo, name, email} = req.body;
-
-    if(!phoneNo || !name || !email || phoneNo==="" || name==="" || email===""){
+    const {phoneNo, name, email, relationship} = req.body;
+    // console.log(req.body);
+    if(!phoneNo || !name || !email || !relationship || phoneNo==="" || name==="" || email==="" || relationship===""){
         next(errorHandler(400, 'All fields are required'));
     }
 
@@ -18,13 +18,14 @@ export const addEmergencyContact = async(req,res,next) =>{
             id:uuidv4(),
             name,
             email,
-            phoneNo
+            phoneNo, 
+            relationship
         }
 
         user.emergencyContacts.push(contactDetails);
 
         await user.save();
-        res.status(201).json(contactDetails);
+        res.status(201).json(user);
     }
     catch(err){
         next(err);
@@ -72,7 +73,7 @@ export const deleteContact = async(req,res,next) =>{
 
         await user.save();
 
-        return res.status(200).json(user.emergencyContacts);
+        return res.status(200).json(user);
     }
     catch(err){
         next(err);
