@@ -12,6 +12,7 @@ import EmergencyContactForm from './pages/EmergencyContactForm';
 import EmergencyContactDetails from './pages/EmergencyContactDetails';
 import CrimeDataMap from './pages/CrimeDataMap';
 import './App.css'
+import SafeRouteMap from './pages/SafeRouteMap';
 function App() {
 
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route path='/addcontact' element={<EmergencyContactForm/>} />
           <Route path='/getcontact' element={<EmergencyContactDetails/>} />
           <Route path='/crimemap' element={<CrimeDataMap/>} />
+          <Route path='/saferoute' element={<SafeRouteMap/>} />
 
           
         </Routes>
