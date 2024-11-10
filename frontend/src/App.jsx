@@ -10,7 +10,8 @@ import DefenseTutorials from './pages/DefenseTutorials';
 import NewsArticles from './pages/NewsArticles';
 import EmergencyContactForm from './pages/EmergencyContactForm';
 import EmergencyContactDetails from './pages/EmergencyContactDetails';
-
+import CrimeDataMap from './pages/CrimeDataMap';
+import './App.css'
 function App() {
 
   return (
@@ -26,6 +27,7 @@ function App() {
           <Route path='/getnews' element={<NewsArticles/>} />
           <Route path='/addcontact' element={<EmergencyContactForm/>} />
           <Route path='/getcontact' element={<EmergencyContactDetails/>} />
+          <Route path='/crimemap' element={<CrimeDataMap/>} />
 
           
         </Routes>
