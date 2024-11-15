@@ -3,16 +3,13 @@ import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Label } from '../components/ui/label';
 import { Button } from '../components/ui/button';
 import { Input } from '../components/ui/input';
-import { useDispatch, useSelector } from 'react-redux';
+import { FaRegFileAlt, FaMapMarkerAlt } from 'react-icons/fa'; // Font Awesome Icons
 import { toast } from 'react-toastify';
-import { FaUserCircle, FaEnvelope, FaPhone, FaMapMarkerAlt, FaRegFileAlt, FaSignOutAlt } from 'react-icons/fa';
 import Header from '../components/shared/Header';
 
-const ComplaintRegister = () => {
+const AnonyMousComplaint = () => {
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
-  const { currentUser } = useSelector((state) => state.user);
-
   const [formData, setFormData] = useState({
     description: "",
     location: "",
@@ -20,6 +17,7 @@ const ComplaintRegister = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+
     setFormData({
       ...formData,
       [name]: value,
@@ -28,6 +26,7 @@ const ComplaintRegister = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     if (!formData.description || !formData.location) {
       toast.error("All fields are required");
       return setError("All fields are required");
@@ -36,7 +35,7 @@ const ComplaintRegister = () => {
     try {
       setLoading(true);
 
-      const res = await fetch('/api/complaint/register-complaint', {
+      const res = await fetch('/api/complaint/anonymous-complaint', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData),
@@ -62,52 +61,16 @@ const ComplaintRegister = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-50 to-blue-100">
-      <Header/>
+      <Header/>      
 
-      {/* Complaint Register Form */}
+      {/* Complaint Form */}
       <div className="flex justify-center py-10">
         <Card className="w-full max-w-xl p-6 shadow-lg rounded-lg bg-white">
           <CardHeader className="text-center mb-4">
-            <CardTitle className="text-3xl font-bold text-blue-600">Register Complaint</CardTitle>
+            <CardTitle className="text-3xl font-bold text-blue-600">Register Complaint Anonymously</CardTitle>
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-6">
-              {/* Name */}
-              <Label htmlFor="name" className="block text-sm font-semibold text-gray-700 flex items-center">
-                <FaUserCircle className="w-5 h-5 text-blue-500 mr-1" />
-                Name
-              </Label>
-              <Input
-                type="text"
-                value={currentUser.name}
-                className="w-full bg-blue-50"
-                disabled
-              />
-
-              {/* Email */}
-              <Label htmlFor="email" className="block text-sm font-semibold text-gray-700 flex items-center">
-                <FaEnvelope className="w-5 h-5 text-blue-500 mr-1" />
-                Email
-              </Label>
-              <Input
-                type="email"
-                value={currentUser.email}
-                className="w-full bg-blue-50"
-                disabled
-              />
-
-              {/* Phone */}
-              <Label htmlFor="phone" className="block text-sm font-semibold text-gray-700 flex items-center">
-                <FaPhone className="w-5 h-5 text-blue-500 mr-1" />
-                Phone No.
-              </Label>
-              <Input
-                type="number"
-                value={currentUser.phoneNo}
-                className="w-full bg-blue-50"
-                disabled
-              />
-
               {/* Description */}
               <Label htmlFor="description" className="block text-sm font-semibold text-gray-700 flex items-center">
                 <FaRegFileAlt className="w-5 h-5 text-blue-500 mr-1" />
@@ -151,4 +114,4 @@ const ComplaintRegister = () => {
   );
 };
 
-export default ComplaintRegister;
+export default AnonyMousComplaint;

@@ -6,9 +6,11 @@ import { useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { signInFailure, signInStart, signInSuccess } from '../redux/user/userSlice';
 import { toast } from 'react-toastify';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Label } from '../components/ui/label';
 
 const SignIn = () => {
-  const {loading , error} = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -25,85 +27,88 @@ const SignIn = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if(!credentials.username || !credentials.password){
-        toast.error('Please fill out all fields');
+    if (!credentials.username || !credentials.password) {
+      toast.error('Please fill out all fields');
       return dispatch(signInFailure('Please fill out all fields'));
     }
 
-    try{
-
+    try {
       dispatch(signInStart());
 
       const res = await fetch('/api/auth/user-signin', {
-        method : 'POST',
-        headers :{ 'Content-Type' : 'application/json'},
-        body:JSON.stringify(credentials)
-      })
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credentials),
+      });
 
       const data = await res.json();
 
-      if(res.ok){
-        console.log(data)
+      if (res.ok) {
         toast.success(`Welcome back ${data.name}`);
         dispatch(signInSuccess(data));
-        navigate('/');
-      }
-      else{
+        navigate('/dashboard');
+      } else {
         toast.error(data.message);
-        console.log(data.message);
         dispatch(signInFailure(data.message));
       }
-    }
-    catch(err){
+    } catch (err) {
       toast.error(err.message);
       dispatch(signInFailure(err.message));
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500">
-      <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-lg w-full max-w-sm transition-transform transform  hover:shadow-2xl duration-300">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Welcome Back!</h2>
-        
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiUser className="text-gray-500 mr-2 text-xl" />
-            Username
-          </label>
-          <Input 
-            name="username" 
-            value={credentials.username} 
-            onChange={handleChange} 
-            placeholder="Enter your username" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
-        
-        <div className="mb-6">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiLockClosed className="text-gray-500 mr-2 text-xl" />
-            Password
-          </label>
-          <Input 
-            type="password" 
-            name="password" 
-            value={credentials.password} 
-            onChange={handleChange} 
-            placeholder="Enter your password" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+    <div className="min-h-screen bg-gradient-to-r from-purple-50 to-pink-100 flex items-center justify-center p-4">
+      <Card className="w-full max-w-md p-6 shadow-lg rounded-lg bg-white">
+        <CardHeader className="text-center mb-4">
+          <CardTitle className="text-3xl font-bold text-purple-600">Welcome Back!</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div>
+              <Label htmlFor="username" className="block text-sm font-semibold text-gray-700 flex items-center">
+                <HiUser className="text-purple-500 mr-2 text-xl" />
+                Username
+              </Label>
+              <Input
+                name="username"
+                value={credentials.username}
+                onChange={handleChange}
+                placeholder="Enter your username"
+                required
+                className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
 
-        <Button type="submit" className="mt-4 w-full bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105">
-          Log In
-        </Button>
+            <div>
+              <Label htmlFor="password" className="block text-sm font-semibold text-gray-700 flex items-center">
+                <HiLockClosed className="text-purple-500 mr-2 text-xl" />
+                Password
+              </Label>
+              <Input
+                type="password"
+                name="password"
+                value={credentials.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+                className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
 
-        <p className="mt-4 text-center text-gray-600">
-          Don’t have an account? <a href="/signup" className="text-blue-600 hover:underline">Sign Up</a>
-        </p>
-      </form>
+            <Button
+              type="submit"
+              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-transform duration-200 transform hover:scale-105"
+            >
+              Log In
+            </Button>
+
+            <p className="mt-4 text-center text-gray-600">
+              Don’t have an account? <a href="/signup" className="text-purple-600 hover:underline">Sign Up</a>
+            </p>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

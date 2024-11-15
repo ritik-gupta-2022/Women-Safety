@@ -6,9 +6,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { signUpFailure, signUpStart, signUpSuccess } from '../redux/user/userSlice';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
+import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card';
+import { Label } from '../components/ui/label';
 
 const SignUp = () => {
-  const {loading , error} = useSelector((state) => state.user);
+  const { loading, error } = useSelector((state) => state.user);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -28,24 +30,24 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if(!userDetails.username || !userDetails.password || !userDetails.email || !userDetails.phoneNo || !userDetails.address || !userDetails.name){
+
+    if (!userDetails.username || !userDetails.password || !userDetails.email || !userDetails.phoneNo || !userDetails.address || !userDetails.name) {
       toast.error("All fields are required");
       return dispatch(signUpFailure("All fields are required"));
     }
 
-    try{
-      signUpStart();
+    try {
+      dispatch(signUpStart());
 
       const res = await fetch('/api/auth/user-signup', {
         method: 'POST',
-        headers:{'Content-Type':'application/json' },
-        body:JSON.stringify(userDetails),
-      })
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(userDetails),
+      });
 
       const data = await res.json();
 
-      if(data.success===false){
+      if (data.success === false) {
         toast.error(data.message);
         return dispatch(signUpFailure(data.message));
       }
@@ -54,121 +56,136 @@ const SignUp = () => {
         dispatch(signUpSuccess(data));
         navigate('/sign-in');
         toast.success(`Account Created Successfully`);
-        
       }
-    }
-    catch(err){
+    } catch (err) {
       dispatch(signUpFailure(err.message));
       toast.error(err.message);
     }
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gradient-to-r from-purple-500 to-pink-500 p-2">
-      <form onSubmit={handleSubmit} className="bg-white p-7 rounded-lg shadow-lg w-full max-w-sm transition-transform transform hover:shadow-2xl duration-300">
-        <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">Create Account</h2>
+    <div className="min-h-screen bg-gradient-to-r from-purple-50 to-pink-100 flex items-center justify-center p-4">
+      <Card className="w-full max-w-lg p-6 shadow-lg rounded-lg bg-white">
+        <CardHeader className="text-center mb-4">
+          <CardTitle className="text-3xl font-bold text-purple-600">Create Account</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={handleSubmit} className="space-y-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              {/* Username */}
+              <div>
+                <Label htmlFor="username" className="block text-sm font-semibold text-gray-700 flex items-center">
+                  <HiUser className="text-purple-500 mr-2 text-xl" />
+                  Username
+                </Label>
+                <Input
+                  name="username"
+                  value={userDetails.username}
+                  onChange={handleChange}
+                  placeholder="Enter your username"
+                  required
+                  className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+              </div>
 
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiUser className="text-gray-500 mr-2 text-xl" />
-            Username
-          </label>
-          <Input 
-            name="username" 
-            value={userDetails.username} 
-            onChange={handleChange} 
-            placeholder="Enter your username" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+              {/* Name */}
+              <div>
+                <Label htmlFor="name" className="block text-sm font-semibold text-gray-700 flex items-center">
+                  <HiUser className="text-purple-500 mr-2 text-xl" />
+                  Name
+                </Label>
+                <Input
+                  name="name"
+                  value={userDetails.name}
+                  onChange={handleChange}
+                  placeholder="Enter your full name"
+                  required
+                  className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+              </div>
 
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiUser className="text-gray-500 mr-2 text-xl" />
-            Name
-          </label>
-          <Input 
-            name="name" 
-            value={userDetails.name} 
-            onChange={handleChange} 
-            placeholder="Enter your full name" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+              {/* Email */}
+              <div>
+                <Label htmlFor="email" className="block text-sm font-semibold text-gray-700 flex items-center">
+                  <HiMail className="text-purple-500 mr-2 text-xl" />
+                  Email
+                </Label>
+                <Input
+                  type="email"
+                  name="email"
+                  value={userDetails.email}
+                  onChange={handleChange}
+                  placeholder="Enter your email"
+                  required
+                  className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+              </div>
 
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiMail className="text-gray-500 mr-2 text-xl" />
-            Email
-          </label>
-          <Input 
-            type="email"
-            name="email" 
-            value={userDetails.email} 
-            onChange={handleChange} 
-            placeholder="Enter your email" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+              {/* Phone Number */}
+              <div>
+                <Label htmlFor="phoneNo" className="block text-sm font-semibold text-gray-700 flex items-center">
+                  <HiPhone className="text-purple-500 mr-2 text-xl" />
+                  Phone Number
+                </Label>
+                <Input
+                  type="tel"
+                  name="phoneNo"
+                  value={userDetails.phoneNo}
+                  onChange={handleChange}
+                  placeholder="Enter your phone number"
+                  required
+                  className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+                />
+              </div>
+            </div>
 
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiLockClosed className="text-gray-500 mr-2 text-xl" />
-            Password
-          </label>
-          <Input 
-            type="password" 
-            name="password" 
-            value={userDetails.password} 
-            onChange={handleChange} 
-            placeholder="Enter your password" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+            {/* Password */}
+            <div>
+              <Label htmlFor="password" className="block text-sm font-semibold text-gray-700 flex items-center">
+                <HiLockClosed className="text-purple-500 mr-2 text-xl" />
+                Password
+              </Label>
+              <Input
+                type="password"
+                name="password"
+                value={userDetails.password}
+                onChange={handleChange}
+                placeholder="Enter your password"
+                required
+                className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
 
-        <div className="mb-4">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiPhone className="text-gray-500 mr-2 text-xl" />
-            Phone Number
-          </label>
-          <Input 
-            type="tel" 
-            name="phoneNo" 
-            value={userDetails.phoneNo} 
-            onChange={handleChange} 
-            placeholder="Enter your phone number" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+            {/* Address */}
+            <div>
+              <Label htmlFor="address" className="block text-sm font-semibold text-gray-700 flex items-center">
+                <HiHome className="text-purple-500 mr-2 text-xl" />
+                Address
+              </Label>
+              <Input
+                name="address"
+                value={userDetails.address}
+                onChange={handleChange}
+                placeholder="Enter your address"
+                required
+                className="w-full bg-purple-50 border-gray-300 rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-purple-300"
+              />
+            </div>
 
-        <div className="mb-6">
-          <label className="flex items-center mb-2 text-gray-700">
-            <HiHome className="text-gray-500 mr-2 text-xl" />
-            Address
-          </label>
-          <Input 
-            name="address" 
-            value={userDetails.address} 
-            onChange={handleChange} 
-            placeholder="Enter your address" 
-            required 
-            className="shadow-md border rounded-lg p-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all duration-200 ease-in-out" 
-          />
-        </div>
+            {/* Submit Button */}
+            <Button
+              type="submit"
+              className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-transform duration-200 transform hover:scale-105"
+            >
+              Sign Up
+            </Button>
 
-        <Button type="submit" className="mt-4 w-full bg-blue-600 text-white rounded-lg shadow hover:bg-blue-700 transition duration-300 ease-in-out transform hover:scale-105">
-          Sign Up
-        </Button>
-
-        <p className="mt-4 text-center text-gray-600">
-          Already have an account? <a href="/signin" className="text-blue-600 hover:underline">Log In</a>
-        </p>
-      </form>
+            <p className="mt-4 text-center text-gray-600">
+              Already have an account? <a href="/signin" className="text-purple-600 hover:underline">Log In</a>
+            </p>
+          </form>
+        </CardContent>
+      </Card>
     </div>
   );
 };

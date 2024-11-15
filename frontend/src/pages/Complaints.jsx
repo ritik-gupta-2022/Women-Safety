@@ -3,6 +3,7 @@ import { Card } from '../components/ui/card';
 import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from '../components/ui/alert-dialog';
 import { toast } from "react-toastify";
+import { FaMapMarkerAlt, FaRegCommentDots, FaUserShield } from 'react-icons/fa';
 
 const Complaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -53,7 +54,7 @@ const Complaints = () => {
     } catch (error) {
       console.error("Failed to delete complaint", error);
       setError(error.message);
-      toast.error(err.message);
+      toast.error(error.message);
     } finally {
       setComplaintToDelete(null);
       setLoading(false);
@@ -61,49 +62,67 @@ const Complaints = () => {
   };
 
   return (
-    <div className="flex flex-col items-center min-h-screen bg-gray-100 p-4">
-      <h2 className="text-2xl font-semibold mb-6">My Complaints</h2>
+    <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 p-8">
+      <h2 className="text-3xl font-semibold text-blue-800 mb-8">My Complaints</h2>
 
       {complaints.length === 0 ? (
-        <div>No complaints found.</div>
+        <div className="text-xl text-gray-500">No complaints found.</div>
       ) : (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
           {complaints.map((complaint) => (
-            <Card key={complaint._id} className="p-4 shadow-lg bg-white">
-              <h3 className="text-lg font-bold mb-2">Complaint ID: {complaint._id}</h3>
-              <p><strong>Description:</strong> {complaint.description}</p>
-              <p><strong>Location:</strong> {complaint.location}</p>
-              <p><strong>Status:</strong> {complaint.status}</p>
-              <p><strong>Anonymous:</strong> {complaint.isAnonymous ? "Yes" : "No"}</p>
+            <Card key={complaint._id} className="p-6 shadow-2xl bg-white rounded-xl transform transition-all hover:scale-105 hover:bg-blue-50">
+              <div className="flex flex-col space-y-4">
+                <div className="flex justify-between items-center">
+                  <h3 className="text-xl font-semibold text-blue-600">Complaint ID: {complaint._id}</h3>
+                  <span className={`text-xs font-semibold py-1 px-3 rounded-full ${complaint.status === 'Resolved' ? 'bg-green-100 text-green-600' : 'bg-yellow-100 text-yellow-600'}`}>
+                    {complaint.status}
+                  </span>
+                </div>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button
-                    onClick={() => setComplaintToDelete(complaint._id)}
-                    className="mt-4 bg-red-500 text-white w-full hover:bg-red-600 transition"
-                  >
-                    Delete Complaint
-                  </Button>
-                </AlertDialogTrigger>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <FaMapMarkerAlt className="text-lg" />
+                  <p className="text-sm">{complaint.location}</p>
+                </div>
 
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>Are you sure you want to delete this complaint?</AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <FaRegCommentDots className="text-lg" />
+                  <p className="text-sm">{complaint.description}</p>
+                </div>
 
-                  <AlertDialogFooter>
-                    <AlertDialogCancel onClick={() => setComplaintToDelete(null)}>
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction onClick={confirmDelete} className="bg-red-500 text-white hover:bg-red-600">
-                      Delete
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+                <div className="flex items-center space-x-2 text-gray-600">
+                  <FaUserShield className="text-lg" />
+                  <p className="text-sm">{complaint.isAnonymous ? "Anonymous" : "Identified"}</p>
+                </div>
+
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button
+                      onClick={() => setComplaintToDelete(complaint._id)}
+                      className="mt-6 w-full py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 focus:outline-none transition-all"
+                    >
+                      Delete Complaint
+                    </Button>
+                  </AlertDialogTrigger>
+
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="text-lg font-semibold text-gray-800">Are you sure you want to delete this complaint?</AlertDialogTitle>
+                      <AlertDialogDescription className="text-gray-600">
+                        This action cannot be undone.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+
+                    <AlertDialogFooter>
+                      <AlertDialogCancel onClick={() => setComplaintToDelete(null)} className="text-gray-600">
+                        Cancel
+                      </AlertDialogCancel>
+                      <AlertDialogAction onClick={confirmDelete} className="bg-red-500 text-white hover:bg-red-600">
+                        Delete
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
             </Card>
           ))}
         </div>

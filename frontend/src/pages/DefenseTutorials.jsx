@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import Header from '../components/shared/Header';
 
 const DefenseTutorials = () => {
   const [videos, setVideos] = useState([]);
@@ -8,20 +9,18 @@ const DefenseTutorials = () => {
   useEffect(() => {
     const fetchVideos = async () => {
       try {
-        const res = await fetch('/api/feature/defense-tutorials'); 
+        const res = await fetch('/api/feature/defense-tutorials');
         const data = await res.json();
 
         if (res.ok) {
-          console.log(data)
+          console.log(data);
           setVideos(data.videos);
         } else {
-            toast.error(data.message || 'Failed to fetch videos')
+          toast.error(data.message || 'Failed to fetch videos');
         }
-      } 
-      catch (err) {
-        toast.error(err.message || 'Failed to fetch videos')
-      } 
-      finally {
+      } catch (err) {
+        toast.error(err.message || 'Failed to fetch videos');
+      } finally {
         setLoading(false);
       }
     };
@@ -29,37 +28,45 @@ const DefenseTutorials = () => {
     fetchVideos();
   }, []);
 
-  if (loading) return <p>Loading videos...</p>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg text-gray-700">
+        <p>Loading videos...</p>
+      </div>
+    );
 
   return (
-    <div className="p-4 bg-gray-100 min-h-screen">
-    <h2 className="text-3xl font-semibold mb-6 text-center">Self-Defense Tutorials</h2>
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {videos.map((video) => (
-        <div
-          key={video.id.videoId}
-          className="bg-white rounded-lg shadow-lg overflow-hidden transition-transform transform hover:scale-105 hover:shadow-2xl"
-        >
-          <iframe
-            className="w-full aspect-video"
-            src={`https://www.youtube.com/embed/${video.id.videoId}`}
-            title={video.snippet.title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-          ></iframe>
-          <div className="p-4">
-            <h3 className="text-lg font-semibold mb-1 line-clamp-2">{video.snippet.title}</h3>
-            <p className="text-gray-600 text-sm line-clamp-2 mb-2">{video.snippet.description}</p>
-            <p className="text-sm text-gray-500">
-              <span className="font-medium">{video.snippet.channelTitle}</span> • Published on {new Date(video.snippet.publishedAt).toLocaleDateString()}
-            </p>
-          </div>
+    <>
+      <Header/>
+      <div className="p-6 bg-gradient-to-r from-indigo-100 via-blue-50 to-blue-200 min-h-screen">
+        <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-800">Self-Defense Tutorials</h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          {videos.map((video) => (
+            <div
+              key={video.id.videoId}
+              className="bg-white rounded-lg shadow-lg overflow-hidden transition-all transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30"
+            >
+              <iframe
+                className="w-full aspect-video rounded-t-lg"
+                src={`https://www.youtube.com/embed/${video.id.videoId}`}
+                title={video.snippet.title}
+                frameBorder="0"
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+              ></iframe>
+              <div className="p-6">
+                <h3 className="text-xl font-semibold mb-2 text-gray-800 line-clamp-2">{video.snippet.title}</h3>
+                <p className="text-gray-600 text-sm mb-3 line-clamp-3">{video.snippet.description}</p>
+                <p className="text-xs text-gray-500">
+                  <span className="font-medium">{video.snippet.channelTitle}</span> •{' '}
+                  {new Date(video.snippet.publishedAt).toLocaleDateString()}
+                </p>
+              </div>
+            </div>
+          ))}
         </div>
-      ))}
-    </div>
-  </div>
-  
+      </div>
+    </>
   );
 };
 

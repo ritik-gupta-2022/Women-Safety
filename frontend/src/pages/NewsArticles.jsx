@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { FaCalendarAlt, FaNewspaper } from 'react-icons/fa';
+import Header from '../components/shared/Header';
 
 const NewsArticles = () => {
   const [articles, setArticles] = useState([]);
@@ -21,37 +23,46 @@ const NewsArticles = () => {
     fetchArticles();
   }, []);
 
-  if (loading) return <div className="text-center mt-10">Loading articles...</div>;
+  if (loading) return <div className="text-center mt-10 text-xl text-gray-700">Loading articles...</div>;
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-4xl font-bold mb-6 text-center">Latest Articles</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <>
+      <Header/>
+      <div className="p-6 bg-gradient-to-r  from-blue-50 to-blue-200 min-h-screen">
+      <h1 className="text-4xl font-extrabold mb-8 text-center text-gray-800">Latest News Articles</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {articles.map((article, index) => (
           <a
             href={article.newsUrl}
             target="_blank"
             rel="noopener noreferrer"
             key={index}
-            className="bg-white rounded-lg shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-200"
+            className="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-2xl transition-shadow duration-300 transform hover:scale-105"
           >
             <img
               src={article.images.thumbnailProxied}
               alt={article.title}
-              className="w-full h-48 object-cover"
+              className="w-full h-48 object-cover rounded-t-xl"
             />
-            <div className="p-4">
-              <h2 className="text-xl font-semibold mb-2">{article.title}</h2>
-              <p className="text-gray-600 text-sm mb-2 line-clamp-2">{article.snippet}</p>
-              <div className="text-gray-500 text-xs flex justify-between">
-                <span>{article.publisher}</span>
-                <span>{new Date(parseInt(article.timestamp)).toLocaleDateString()}</span>
+            <div className="p-5">
+              <h2 className="text-2xl font-semibold text-gray-800 mb-3">{article.title}</h2>
+              <p className="text-gray-600 text-sm mb-4 line-clamp-3">{article.snippet}</p>
+              <div className="text-gray-500 text-xs flex items-center justify-between">
+                <div className="flex items-center space-x-1">
+                  <FaNewspaper className="text-blue-500" />
+                  <span>{article.publisher}</span>
+                </div>
+                <div className="flex items-center space-x-1">
+                  <FaCalendarAlt className="text-pink-500" />
+                  <span>{new Date(parseInt(article.timestamp)).toLocaleDateString()}</span>
+                </div>
               </div>
             </div>
           </a>
         ))}
       </div>
-    </div>
+     </div>
+    </>
   );
 };
 

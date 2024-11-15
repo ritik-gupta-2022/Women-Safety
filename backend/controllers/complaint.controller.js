@@ -43,7 +43,7 @@ export const getAllComplaints = async(req,res,next) =>{
         }
 
         // Fetch all complaints and populate the 'userId' field with user details
-        const complaints = await Complaint.find({ isAnonymous: false }).populate('userId', 'username email phoneNo address');
+        const complaints = await Complaint.find({  }).populate('userId', 'username email phoneNo address');
         
         res.status(200).json(complaints);
     }
