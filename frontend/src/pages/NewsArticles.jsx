@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 import { FaCalendarAlt, FaNewspaper } from 'react-icons/fa';
 import Header from '../components/shared/Header';
+import { Audio } from 'react-loader-spinner';
 
 const NewsArticles = () => {
   const [articles, setArticles] = useState([]);
@@ -23,7 +24,12 @@ const NewsArticles = () => {
     fetchArticles();
   }, []);
 
-  if (loading) return <div className="text-center mt-10 text-xl text-gray-700">Loading articles...</div>;
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg text-gray-700">
+        <Audio height="100" width="100" color="#1ccee6" ariaLabel="audio-loading"  wrapperStyle={{}} wrapperClass="wrapper-class"  visible={true}/>
+      </div>
+    );
 
   return (
     <>

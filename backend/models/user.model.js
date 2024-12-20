@@ -32,6 +32,10 @@ const userSchema = new mongoose.Schema(
             required:true,
             default: 'Point',
         },
+        isAdmin:{
+            type: Boolean,
+            default: false,
+        },
         emergencyContacts: [],
 
     }, { timestamps: true })

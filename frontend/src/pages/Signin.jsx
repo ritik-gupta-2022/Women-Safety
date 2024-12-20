@@ -100,7 +100,7 @@ const SignIn = () => {
               type="submit"
               className="w-full bg-purple-600 text-white py-3 rounded-lg font-semibold hover:bg-purple-700 transition-transform duration-200 transform hover:scale-105"
             >
-              Log In
+              Sign In
             </Button>
 
             <p className="mt-4 text-center text-gray-600">

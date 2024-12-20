@@ -1,6 +1,6 @@
 import User from "../models/user.model.js";
 import { errorHandler } from "../utils/error.js";
-import createMessage from "../utils/sms.js";
+import createMessage, { createCall } from "../utils/sms.js";
 import fetch from 'node-fetch';
 
 export const getNews = async(req,res,next)=>{
@@ -36,7 +36,8 @@ export const getNews = async(req,res,next)=>{
 
 export const sendAlert = async (req,res,next) =>{
     const userId = req.user.id;
-   
+    const {lon, lat} = req.body;
+
     try{
         const user = await User.findById(userId);
         const contacts = user.emergencyContacts;
@@ -44,8 +45,34 @@ export const sendAlert = async (req,res,next) =>{
         if(!user){
             return next(errorHandler(401 , "Unauthorized: You do not have access"));
         }
-        createMessage();
+        console.log(lon, lat);
+        const locationUrl = `https://www.google.com/maps/search/?api=1&query=${lat},${lon}`
+        console.log(locationUrl);
+
+        createMessage(locationUrl);
+        
         res.status(200).json("Message sent successfully");
+    }
+    catch(err){
+        console.error(err);
+        next(err);
+    }
+}
+
+export const fakeCall = async (req,res) => {
+    const userId = req.user.id;
+
+    try{
+        const user = await User.findById(userId);
+        const contacts = user.emergencyContacts;
+
+        if(!user){
+            return next(errorHandler(401 , "Unauthorized: You do not have access"));
+        }
+
+        createCall();
+        
+        res.status(200).json("Call made successfully");
     }
     catch(err){
         console.error(err);
@@ -67,8 +94,7 @@ export const getTutorials = async (req, res, next) => {
     const orderOptions = ["date", "relevance", "viewCount", "rating"];
     const order = orderOptions[Math.floor(Math.random() * orderOptions.length)];
     
-    const url = `https://youtube-v31.p.rapidapi.com/search?q=${encodeURIComponent(query)}&part=snippet%2Cid&regionCode=US&maxResults=30&order=${order}`;
-
+    const url = `https://youtube-v31.p.rapidapi.com/search?q=${encodeURIComponent(query)}&part=snippet%2Cid&regionCode=US&maxResults=50&order=${order}`;
     const options = {
         method: 'GET',
         headers: {
@@ -80,7 +106,7 @@ export const getTutorials = async (req, res, next) => {
     try {
         const response = await fetch(url, options);
         const result = await response.json();
-        
+        console.log(result);        
 
         res.status(200).json({
             videos: result.items,

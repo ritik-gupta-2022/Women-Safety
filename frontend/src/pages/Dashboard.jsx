@@ -7,14 +7,14 @@ const Dashboard = () => {
   const navigate = useNavigate();
 
   const features = [
-    { title: "Safe Places", icon: <HiOutlineShieldCheck />, bgColor: "bg-gradient-to-r from-blue-500 to-blue-400" },
-    { title: "SOS", icon: <HiOutlineMap />, bgColor: "bg-gradient-to-r from-red-500 to-red-400" },
+    { title: "Safe Places", icon: <HiOutlineShieldCheck />, bgColor: "bg-gradient-to-r from-blue-500 to-blue-400",url: "/safeplaces" },
+    // { title: "SOS", icon: <HiOutlineMap />, bgColor: "bg-gradient-to-r from-red-500 to-red-400" },
     { title: "Add Guardian", icon: <HiOutlineUser />, bgColor: "bg-gradient-to-r from-green-500 to-green-400", url: "/addcontact" },
     { title: "View Guardian", icon: <HiOutlineUser />, bgColor: "bg-gradient-to-r from-green-500 to-green-400", url: "/getcontact" },
     { title: "Create Complaint", icon: <HiOutlineDocumentText />, bgColor: "bg-gradient-to-r from-purple-500 to-purple-400", url: "/register-complaint" },
-    { title: "Anonymous Complaint", icon: <HiOutlineDocumentText />, bgColor: "bg-gradient-to-r from-purple-500 to-purple-400", url: "/anonymous-complaint" },
+    { title: "Anonymous Complaint", icon: <HiOutlineDocumentText />, bgColor: "bg-gradient-to-r from-red-500 to-red-400", url: "/anonymous-complaint" },
     { title: "My Complaint", icon: <HiOutlineShieldCheck />, bgColor: "bg-gradient-to-r from-purple-500 to-purple-400", url: "/show-complaints" },
-    { title: "My Profile", icon: <HiOutlineUser />, bgColor: "bg-gradient-to-r from-teal-500 to-teal-400", url: "/userdetails" },
+    // { title: "My Profile", icon: <HiOutlineUser />, bgColor: "bg-gradient-to-r from-teal-500 to-teal-400", url: "/userdetails" },
     { title: "Crime Location Map", icon: <HiOutlineMap />, bgColor: "bg-gradient-to-r from-yellow-500 to-yellow-400", url: "/crimemap" },
     { title: "Safe Route", icon: <HiOutlineMap />, bgColor: "bg-gradient-to-r from-pink-500 to-pink-400", url: "/saferoute" },
     { title: "Self-Defense Tutorials", icon: <HiOutlineUser />, bgColor: "bg-gradient-to-r from-orange-500 to-orange-400", url: "/tutorials" },
@@ -22,11 +22,9 @@ const Dashboard = () => {
   ];
 
   return (
-    <div className="min-h-screen bg-gray-100 p-6">
-      {/* Header with Profile and Logout */}
+    <div className="min-h-screen bg-gray-100 ">
       <Header/>
 
-      {/* Feature Cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6 px-4">
         {features.map((feature, index) => (
           <Card
@@ -41,7 +39,7 @@ const Dashboard = () => {
               {feature.url && (
                 <button
                   onClick={() => navigate(feature.url)}
-                  className="underline hover:no-underline text-sm bg-white bg-opacity-20 px-3 py-2 rounded-full transition-all duration-200 hover:bg-opacity-40"
+                  className="text-sm bg-white bg-opacity-20 px-3 py-2 rounded-full transition-all duration-200 hover:bg-opacity-40"
                 >
                   Go to {feature.title}
                 </button>

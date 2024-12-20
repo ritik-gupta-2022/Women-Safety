@@ -51,11 +51,10 @@ export const userSignin = async(req,res,next)=>{
 
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET_KEY,);
 
-         // { ...rest } collects the remaining properties of the validUser._doc object (excluding password) into a new object called rest. because we do't want to send password in our response object
         const { password :pass, ...rest} = user._doc
 
         res.status(200).cookie('access_token', token, {
-            httpOnly: true,
+            httpOnly: false,
         })
         .json(rest);
         
@@ -64,3 +63,70 @@ export const userSignin = async(req,res,next)=>{
         next(err);
     }
 }
+
+export const updateDetails = async (req,res,next) =>{
+    const {username, name , email, phoneNo, address} = req.body;
+    const userId = req.user.id;
+
+    if(!username|| !name || !email || !email || !phoneNo || !address || username === '' || name==='' || email === '' || address==='' || phoneNo===''){
+        next(errorHandler(400, 'All fields are required'));
+    }
+
+    try{
+        const updatedUser = await User.findByIdAndUpdate(
+            userId,
+            {
+              $set: {
+                username,
+                name,
+                email,
+                phoneNo,
+                address
+              },
+            },
+            { new: true }  // new:true sends the updated info to db
+          );
+        //   const { password, ...rest } = updatedUser._doc;
+          res.status(200).json(updatedUser);
+    }
+    catch(err){
+        next(err);
+    }
+}
+
+// export const logout = async(req,res,next)=>{
+//     try{
+//         if(req.cookies.access_token)
+//         res.clearCookie('access_token');
+      
+//           return res.status(200).json({
+//             success: true,
+//             message: "Successfully logged out.",
+//           });
+//     }
+//     catch(err){
+//         next(err);
+//     }
+// }
+export const logout = async (req, res, next) => {
+    try {
+      // Check if cookies are present
+      if (!req.cookies || Object.keys(req.cookies).length === 0) {
+        return res.status(200).json({
+          success: true,
+          message: "No cookies found. You are already logged out.",
+        });
+      }
+  
+      // Clear cookies
+      res.clearCookie('access_token'); // Replace "cookie_name" with the name of the cookie you want to clear
+  
+      return res.status(200).json({
+        success: true,
+        message: "Successfully logged out.",
+      });
+    } catch (err) {
+        console.log(err);
+      next(err);
+    }
+  };

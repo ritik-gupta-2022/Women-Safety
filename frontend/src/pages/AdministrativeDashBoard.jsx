@@ -36,10 +36,8 @@ const AdministrativeDashboard = () => {
   const handleStatusUpdate = async (complaintId, newStatus) => {
     try {
       const response = await fetch(`/api/complaint/update-status/${complaintId}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-        },
+        method: 'PUT',
+        headers: {'Content-Type': 'application/json'},
         body: JSON.stringify({ status: newStatus })
       });
 
@@ -105,9 +103,9 @@ const AdministrativeDashboard = () => {
   }
 
   return (
-    <div className="p-6 space-y-6">
+    <div className=" space-y-6">
       <Header/>
-      <div className="flex gap-4 mb-6">
+      <div className="p-1 flex gap-4 mb-6">
         <div className="flex items-center space-x-2 flex-1">
           <Search className="w-4 h-4 text-gray-500" />
           <Input 

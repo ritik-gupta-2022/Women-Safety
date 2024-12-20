@@ -267,6 +267,7 @@ const CrimeDataMap = () => {
     };
   }, [map, crimeData]);
 
+  
   return (
     <Card className="w-screen h-screen border-none rounded-none">
       <CardHeader className="absolute top-4 left-4 z-10 bg-white rounded-lg shadow-md">

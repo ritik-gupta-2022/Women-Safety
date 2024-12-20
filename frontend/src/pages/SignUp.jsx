@@ -54,7 +54,7 @@ const SignUp = () => {
 
       if (res.status === 201) {
         dispatch(signUpSuccess(data));
-        navigate('/sign-in');
+        navigate('/signin');
         toast.success(`Account Created Successfully`);
       }
     } catch (err) {
@@ -181,7 +181,7 @@ const SignUp = () => {
             </Button>
 
             <p className="mt-4 text-center text-gray-600">
-              Already have an account? <a href="/signin" className="text-purple-600 hover:underline">Log In</a>
+              Already have an account? <a href="/signin" className="text-purple-600 hover:underline">Sign In</a>
             </p>
           </form>
         </CardContent>

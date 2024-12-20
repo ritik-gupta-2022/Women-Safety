@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import Header from '../components/shared/Header';
+import { Audio } from 'react-loader-spinner';
 
 const DefenseTutorials = () => {
   const [videos, setVideos] = useState([]);
@@ -31,7 +32,15 @@ const DefenseTutorials = () => {
   if (loading)
     return (
       <div className="flex justify-center items-center min-h-screen text-lg text-gray-700">
-        <p>Loading videos...</p>
+        <Audio
+          height="100"
+          width="100"
+          color="#1ccee6"
+          ariaLabel="audio-loading"
+          wrapperStyle={{}}
+          wrapperClass="wrapper-class"
+          visible={true}
+        />
       </div>
     );
 
@@ -41,7 +50,7 @@ const DefenseTutorials = () => {
       <div className="p-6 bg-gradient-to-r from-indigo-100 via-blue-50 to-blue-200 min-h-screen">
         <h2 className="text-4xl font-extrabold mb-8 text-center text-gray-800">Self-Defense Tutorials</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-          {videos.map((video) => (
+          {videos?.map((video) => (
             <div
               key={video.id.videoId}
               className="bg-white rounded-lg shadow-lg overflow-hidden transition-all transform hover:scale-105 hover:shadow-2xl hover:shadow-indigo-500/30"
@@ -50,7 +59,6 @@ const DefenseTutorials = () => {
                 className="w-full aspect-video rounded-t-lg"
                 src={`https://www.youtube.com/embed/${video.id.videoId}`}
                 title={video.snippet.title}
-                frameBorder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 allowFullScreen
               ></iframe>

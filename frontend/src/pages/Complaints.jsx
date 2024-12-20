@@ -4,6 +4,8 @@ import { Button } from '../components/ui/button';
 import { AlertDialog, AlertDialogTrigger, AlertDialogContent, AlertDialogHeader, AlertDialogFooter, AlertDialogTitle, AlertDialogDescription, AlertDialogCancel, AlertDialogAction } from '../components/ui/alert-dialog';
 import { toast } from "react-toastify";
 import { FaMapMarkerAlt, FaRegCommentDots, FaUserShield } from 'react-icons/fa';
+import Header from "../components/shared/Header";
+import { Comment } from "react-loader-spinner";
 
 const Complaints = () => {
   const [complaints, setComplaints] = useState([]);
@@ -60,14 +62,34 @@ const Complaints = () => {
       setLoading(false);
     }
   };
-
+  
+  if (loading)
+    return (
+      <div className="flex justify-center items-center min-h-screen text-lg text-gray-700">
+        <Comment
+          visible={true}
+          height="80"
+          width="80"
+          ariaLabel="comment-loading"
+          wrapperStyle={{}}
+          wrapperClass="comment-wrapper"
+          color="#fff"
+          backgroundColor="rgb(58 93 205)"
+        />
+      </div>
+    );
+  
   return (
+  <>
+  
+    <Header/>
     <div className="flex flex-col items-center min-h-screen bg-gradient-to-r from-blue-50 to-blue-200 p-8">
+      
       <h2 className="text-3xl font-semibold text-blue-800 mb-8">My Complaints</h2>
 
       {complaints.length === 0 ? (
         <div className="text-xl text-gray-500">No complaints found.</div>
-      ) : (
+      ): (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full max-w-6xl">
           {complaints.map((complaint) => (
             <Card key={complaint._id} className="p-6 shadow-2xl bg-white rounded-xl transform transition-all hover:scale-105 hover:bg-blue-50">
@@ -128,6 +150,7 @@ const Complaints = () => {
         </div>
       )}
     </div>
+  </>
   );
 };
 

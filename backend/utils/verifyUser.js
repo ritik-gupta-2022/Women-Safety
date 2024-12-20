@@ -7,7 +7,7 @@ export const verifyToken = async(req,res,next)=>{
     if(!token){
         next(errorHandler(401, "Unauthorized: No token found"));
     }
-    //verify the token
+    
     jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user)=>{
         if (err) {
             console.error('JWT Verification Error:', err); 

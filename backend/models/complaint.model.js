@@ -21,7 +21,7 @@ const complaintSchema = new mongoose.Schema({
     },
     isAnonymous: {
         type: Boolean,
-        default: false, // Default is false, set to true for anonymous complaints
+        default: false, 
     },
 }, { timestamps: true })
 

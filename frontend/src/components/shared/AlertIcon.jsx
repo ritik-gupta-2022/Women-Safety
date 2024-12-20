@@ -1,13 +1,28 @@
 import React from 'react';
-import axios from 'axios';
-import { AlertCircle } from 'lucide-react'; // ShadCN icon
+import { AlertCircle } from 'lucide-react'; 
 import { toast } from 'react-toastify';
+import { useSelector } from 'react-redux';
 
 const AlertIcon = () => {
-  // Function to handle the API call on icon click
+  const {currentUser} = useSelector((state)=>state.user);
   const handleClick = async () => {
     try {
-      const res = await fetch('api/feature/send-alert'); // Replace with your API URL
+      const position = await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition(resolve, reject, {
+          enableHighAccuracy: true,
+          timeout: 5000,
+          maximumAge: 0,
+        });
+      });
+
+      const coords = [position.coords.longitude, position.coords.latitude];
+      console.log(coords);
+      const res = await fetch('api/feature/send-alert',{
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({lon:position.coords.longitude, lat:position.coords.latitude})
+      }); 
+
       const data = await res.json();
       if(res.status===200){
         toast.success("SOS Alert sent to your emergency contacts");
@@ -22,7 +37,7 @@ const AlertIcon = () => {
     }
   };
 
-  return (
+  return ( currentUser && !currentUser?.isAdmin && 
     <div
       onClick={handleClick}
       className="fixed bottom-4 right-4 w-12 h-12 bg-red-500 rounded-full flex items-center justify-center shadow-lg cursor-pointer text-white hover:bg-red-600 transition-colors"

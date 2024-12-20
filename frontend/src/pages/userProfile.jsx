@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCurrentUser } from '../redux/user/userSlice';
 import { FaUserCircle, FaEnvelope, FaPhone, FaMapMarkerAlt } from 'react-icons/fa'; // Added icons for consistency
 import Header from '../components/shared/Header';
+import { toast } from 'react-toastify';
 
 const UserProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -26,13 +27,40 @@ const UserProfile = () => {
   };
 
   const handleSave = async () => {
-    try {
+    try{
       setIsEditing(false);
-      dispatch(updateCurrentUser(editedData));
-    } catch (error) {
-      console.error('Error updating profile:', error);
+      updateDetails();
+    } 
+    catch(err){
+      toast.error(err.message);
+      console.error('Error updating profile:', err);
     }
   };
+
+  const updateDetails = async()=>{
+    try{
+      const res = await fetch('/api/auth/update-user',{
+        method:"PUT",
+        headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(editedData),
+      })
+
+      const data = await res.json();
+
+      if(res.status===200){
+        dispatch(updateCurrentUser(editedData));
+        toast.success("User details Updated");
+      }
+      else{
+        // console.log(data);
+        toast.error(data.message);
+      }
+    }
+    catch(err){
+      console.log(data);
+      toast.error(err.message);
+    }
+  }
 
   const handleChange = (e) => {
     const { name, value } = e.target;

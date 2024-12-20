@@ -153,3 +153,25 @@ export const getAllAnonymousComplaints = async(req,res,next) =>{
         next(err);
     }
 }
+
+export const updateComplaintStatus = async(req,res,next)=>{
+    const user = req.user;
+    const {status} = req.body;
+    const {complaintId} = req.params;
+    // if(!user.role || user.role !== "admin"){
+    //     return next(errorHandler(401, "Unauthorized: You are not allowed"));
+    // }
+
+    try{
+        const complaint = await Complaint.findById(complaintId);
+        if (!complaint) {
+            return next(errorHandler(404, "Complaint not found"));
+        }
+        complaint.status = status;
+        await complaint.save();
+        res.status(200).json(complaint);
+    }
+    catch(err){
+        next(err);
+    }
+}

@@ -10,9 +10,9 @@ const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
 const client = twilio(accountSid, authToken);
 
-async function createMessage() {
+async function createMessage(url) {
   const message = await client.messages.create({
-    body: "I'm in DANGER , Please help I'm sharing my location.",
+    body: `I'm in DANGER , Please help I'm sharing my location. Location URL:${url}`,
     from: "+17542191114",
     to: "+917007215662",
   });
@@ -21,3 +21,15 @@ async function createMessage() {
 }
 
 export default createMessage;
+
+export async function createCall() {
+  client.calls
+  .create({
+    url: 'http://demo.twilio.com/docs/voice.xml',
+    to: '+917007215662',
+    from: '+17542191114', 
+  })
+  .then(call => console.log(`Call initiated with SID: ${call.sid}`))
+  .catch(error => console.error(error));
+
+}

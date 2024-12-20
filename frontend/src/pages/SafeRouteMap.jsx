@@ -1,7 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { Badge } from '@/components/ui/badge';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 
 const SafeRouteMap = () => {
@@ -12,7 +11,6 @@ const SafeRouteMap = () => {
   const [destination, setDestination] = useState('');
   const [selectedDestination, setSelectedDestination] = useState(null);
   const [searchTimeout, setSearchTimeout] = useState(null);
-  const [safetyPOIs, setSafetyPOIs] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const destinationMarkerRef = useRef(null);
@@ -25,7 +23,6 @@ const SafeRouteMap = () => {
       setSearchResults([]);
       return;
     }
-
     try {
       const response = await fetch(
         `https://api.geoapify.com/v1/geocode/autocomplete?text=${encodeURIComponent(query)}&format=geojson&apiKey=${API_KEY}`

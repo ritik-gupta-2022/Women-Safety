@@ -17,6 +17,11 @@ import UserProfile from './pages/userProfile';
 import AdministrativeDashboard from './pages/AdministrativeDashBoard';
 import AnonyMousComplaint from './pages/AnonymousComplant';
 import AlertIcon from './components/shared/AlertIcon';
+import OnlyAdminPrivateRoute from './components/shared/OnlyAdminPrivateRoute';
+import Home from './components/shared/Home';
+import OnlyUserPrivateRoute from './components/shared/OnlyUserPrivateRoute';
+import SafePlacesMap from './pages/SafePlacesMap';
+import CallIcon from './components/shared/CallIcon';
 
 function App() {
 
@@ -24,24 +29,35 @@ function App() {
     <>
       <BrowserRouter>
         <Routes>
+          <Route path='/' element={<Home/>} />
           <Route path='/signin' element={<SignIn/>} />
           <Route path='/signup' element={<SignUp/>} />
-          <Route path='/dashboard' element={<Dashboard/>} />
-          <Route path='/register-complaint' element={<ComplaintRegister/>} />
-          <Route path='/anonymous-complaint' element={<AnonyMousComplaint/>} />
-          <Route path='/show-complaints' element={<Complaints/>} />
-          <Route path='/tutorials' element={<DefenseTutorials/>} />
-          <Route path='/getnews' element={<NewsArticles/>} />
-          <Route path='/addcontact' element={<EmergencyContactForm/>} />
-          <Route path='/getcontact' element={<EmergencyContactDetails/>} />
-          <Route path='/crimemap' element={<CrimeDataMap/>} />
-          <Route path='/saferoute' element={<SafeRouteMap/>} />
-          <Route path='/userdetails' element={<UserProfile/>} />
-          <Route path='/admin-dashboard' element={<AdministrativeDashboard/>} />
+          
+          <Route path='' element={<OnlyUserPrivateRoute/>}>
+            <Route path='/dashboard' element={<Dashboard/>} />
+            <Route path='/register-complaint' element={<ComplaintRegister/>} />
+            <Route path='/anonymous-complaint' element={<AnonyMousComplaint/>} />
+            <Route path='/show-complaints' element={<Complaints/>} />
+            <Route path='/tutorials' element={<DefenseTutorials/>} />
+            <Route path='/getnews' element={<NewsArticles/>} />
+            <Route path='/addcontact' element={<EmergencyContactForm/>} />
+            <Route path='/getcontact' element={<EmergencyContactDetails/>} />
+            <Route path='/crimemap' element={<CrimeDataMap/>} />
+            <Route path='/saferoute' element={<SafeRouteMap/>} />
+            <Route path='/safeplaces' element={<SafePlacesMap/>} />
+
+          </Route>
+
+          <Route path='/profile' element={<UserProfile/>} />
+
+          <Route path='' element={<OnlyAdminPrivateRoute/>}>
+            <Route path='/admin-dashboard' element={<AdministrativeDashboard/>} />
+          </Route>
 
         </Routes>
       </BrowserRouter>
       <ToastContainer />
+      <CallIcon/>
       <AlertIcon/>
     </>
   )
